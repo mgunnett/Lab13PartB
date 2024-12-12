@@ -13,7 +13,7 @@ int main() {
     while (true) {
         cin >> choice;
         if (toupper(choice) == 'Q') {
-            break;
+            break; 
         }
         cin.unget(); // Put the character back into the input stream
         cin >> year;
