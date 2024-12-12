@@ -4,83 +4,48 @@
 
 using namespace std;
 
-int daysInMonth(int month, int year);
+int dayOfWeek(int month, int day, int year);
 
 int main() {
     char choice;
-    int month, year;
+    int month, day, year;
     string monthName;
-    
 
-    cout << "Enter a month and a year: ";
+    cout << "Enter a date (month day year): ";
     while (true) {
         cin >> choice;
         if (toupper(choice) == 'Q') {
             break;
         }
         cin.unget(); // Put the character back into the input stream
-        cin >> month >> year;
+        cin >> month >> day >> year;
 
-        if (month == 1) {
-            monthName = "January";
-        }
-        if (month == 2) {
-            monthName = "Feburary";
-        }
-        if (month == 3) {
-            monthName = "March";
-        }
-        if (month == 4) {
-            monthName = "April";
-        }
-        if (month == 5) {
-            monthName = "May";
-        }
-        if (month == 6) {
-            monthName = "June";
-        }
-        if (month == 7) {
-            monthName = "July";
-        }
-        if (month == 8) {
-            monthName = "August";
-        }
-        if (month == 9) {
-            monthName = "September";
-        }
-        if (month == 10) {
-            monthName = "October";
-        }
-        if (month == 11) {
-            monthName = "November";
-        }
-        if (month == 3) {
-            monthName = "December";
-        }
+        int weekday = dayOfWeek(month, day, year);
 
-        int days = daysInMonth(month, year);
-        cout << monthName << " " << year << " has " << days << " days.\n" << endl;
+        string weekdays[] = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+        string months[] = { "January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        cout << weekdays[weekday] << ", " << months[month-1] << " " << day << ", " << year <<"\n" << endl;
 
-        cout << "Enter a month and a year or press 'Q' to quit: ";
+        cout << "Enter a date (month day year) or press 'Q' to quit: ";
     }
 
     return 0;
 }
-/**
- * daysInMonth – determines the number of days in a specified month
- * @param month the month; expected to be in the range [1..12]
- * @param year the year; expected to be >= 1582
- * @return either 28, 29, 30, or 31, based on month and (leap) year
- */
-int daysInMonth(int month, int year) {
-    if (month == 2) {
-        return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) ? 29 : 28;
-    }
-    else if (month == 4 || month == 6 || month == 9 || month == 11) {
-        return 30;
-    }
-    else {
-        return 31;
-    }
-}
 
+/**
+ * dayOfWeek - Computes the weekday of a given date.
+ * @param year the year
+ * @param month the month (1 = January ... 12 = December)
+ * @param day the day of the month
+ * @return the weekday (0 = Saturday ... 6 = Friday)
+ */
+int dayOfWeek(int month, int day, int year) {
+    if (month < 3) {
+        month += 12;
+        year -= 1;
+    }
+    int k = year % 100;
+    int j = year / 100;
+    int h = (day + 13 * (month + 1) / 5 + k + k / 4 + j / 4 + 5 * j) % 7;
+    return h;
+}
